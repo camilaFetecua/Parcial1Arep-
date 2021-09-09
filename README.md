@@ -2,8 +2,23 @@
 
 ##Maria Camila Fetecua Garcia 
 
+# Prerrequisitos 
+  + Git version 2.25.1
+  + Apavhe Maven version 4.0.0
+  + Java version 11.0.11
+  
+ Para verificar que esten instalados los programas puede usar los suguientes comandos
+    + mvn --version
+    + git version
+    +java --version
 
+Para ejecutar el proyecto debe pirmero clonar el repositorio:
 
+git clone https://github.com/camilaFetecua/Parcial1Arep-.git
+
+ Para ejecutar el ejecicio utilice el siguiente comando:
+   
+    java -cp java -cp ArepaParcial-1.0-SNAPSHOT.jar co.edu.escuelaing.arep.HttpServer.HttpServer
 
 
 1. Construir una  aplicación web usando sockets que reciba un número y una cadena de tres caracteres. La cadena puede ser una de tres opciones: "cos", "sin", "tan".
@@ -19,3 +34,7 @@ La aplicación asume que el número que recibe está en radianes y muestra el va
  5. El diseño de los servicios WEB debe tener en cuenta buenas prácticas de diseño OO.
  6. Despliegue los servicios en Heroku en dynos separados.
   7. Los llamados al servicio de calculadora desde el cliente deben ser asíncronos usando el mínimo JS prosible. No actualice la página en cada llamado, solo el resultado.
+
+
+
+Para 
