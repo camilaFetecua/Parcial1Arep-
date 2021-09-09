@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.escuelaing.arep.Calculadora.Calculadora;
+
 
 /**
  * Se realizo en clase
@@ -54,6 +56,11 @@ public class HttpServer {
         }
         serverSocket.close();
     }
+    public String makeResponse(String path, String n){
+        return "HTTP/1.1 200 OK\r\n"
+                + "Content-Type: "+"application/json"+"\r\n"
+                + "\r\n"+Calculadora.getRespuesta(path,n);
+    }
 
     public void processRequest(Socket clientSocket) throws IOException {
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -62,14 +69,17 @@ public class HttpServer {
         String method = "";
         String path = "";
         String version = "";
+        String parametro="";
         List<String> headers = new ArrayList<String>();
         while ((inputLine = in.readLine()) != null) {
             if (method.isEmpty()) {
                 String[] requestStrings = inputLine.split(" ");
-                method = requestStrings[0];
-                path = requestStrings[1];
+                String[] rta = requestStrings[1].split("//");
+                method= requestStrings[0];
+                path = rta[0];
                 version = requestStrings[2];
-                System.out.println("reques: " + method + " " + path + " " + version);
+                parametro = rta[1].split("=")[1];
+
             } else {
                 System.out.println("header: " + inputLine);
                 headers.add(inputLine);
@@ -79,25 +89,16 @@ public class HttpServer {
                 break;
             }
         }
-        String responseMessage = createResponse(path);
+
+        String responseMessage = createResponse(path,parametro);
         out.println(responseMessage);
         out.close();
         in.close();
         clientSocket.close();
     }
 
-    public String createResponse(String path){
-        String type = "text/html";
-        if(path.endsWith(".css")){
-            type = "text/css";
-        }else if(path.endsWith(".js")){
-            type = "text/javascript ";
-        }else if(path.endsWith(".jpeg")){
-            type = "image/jpeg";
-        }else if(path.endsWith(".png")){
-            type = "image/png";
-        }
-        Path file = Paths.get("./www" + path);
+    public String createResponse(String path,String n){
+        Path file = Paths.get("./Html" + path);
         Charset charset = Charset.forName("UTF-8");
         String outmsg = "";
         try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
@@ -109,10 +110,9 @@ public class HttpServer {
         } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }
-        return "HTTP/1.1 200 OK \r\n"
-                + "Content-Type: "+type+"\r\n"
-                + "\r\n"
-                + outmsg;
+        return "HTTP/1.1 200 OK\r\n"
+                + "Content-Type: "+"application/json"+"\r\n"
+                + "\r\n"+Calculadora.getRespuesta(path,n);
     }
 
     static int getPort() {
