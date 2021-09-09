@@ -30,6 +30,8 @@ public class Calculadora {
     public  static String getRespuesta(String calcular,String n) {
         try {
             switch(calcular){
+                case "/none":
+                    return '{'+"'error':'no se encuentra'"+'}';
                 case "/sin":
                     return '{'+"'data':"+getCos(Double.parseDouble(n))+'}';
                 case "/cos":
@@ -41,10 +43,10 @@ public class Calculadora {
                     return '{'+"'no se encuentra'"+'}';
 
                 default:
-                    return '{'+"'calcular':'no se encuentra'"+'}';
+                    return '{'+"'error':'no se encuentra'"+'}';
             }
         }catch(NumberFormatException e){
-            return '{'+"'calcular':'no se encuentra'"+'}';
+            return '{'+"'error':'no se encuentra'"+'}';
         }
     }
 

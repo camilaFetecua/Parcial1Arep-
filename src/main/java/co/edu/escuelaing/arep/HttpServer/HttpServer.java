@@ -72,15 +72,25 @@ public class HttpServer {
         String parametro="";
         List<String> headers = new ArrayList<String>();
         while ((inputLine = in.readLine()) != null) {
-            if (method.isEmpty()) {
-                String[] requestStrings = inputLine.split(" ");
-                String[] rta = requestStrings[1].split("//");
-                method= requestStrings[0];
-                path = rta[0];
-                version = requestStrings[2];
-                parametro = rta[1].split("=")[1];
 
+            if (method.isEmpty()) {
+                try {
+                    String[] requestStrings = inputLine.split(" ");
+                    String[] rta = requestStrings[1].split("//");
+                    method = requestStrings[0];
+                    path = rta[0];
+                    version = requestStrings[2];
+                    parametro = rta[1].split("=")[1];
+                }catch (Exception no){
+                    String[] requestString = inputLine.split(" ");
+                    method= requestString[0];
+                    path = requestString[1];
+                    version = requestString[2];
+                    System.out.println("Request: "+ method + " "+path+" "+version);
+                }
             } else {
+                parametro="none";
+                path="none";
                 System.out.println("header: " + inputLine);
                 headers.add(inputLine);
             }
@@ -98,7 +108,7 @@ public class HttpServer {
     }
 
     public String createResponse(String path,String n){
-        Path file = Paths.get("./Html" + path);
+        Path file = Paths.get("./www" + path);
         Charset charset = Charset.forName("UTF-8");
         String outmsg = "";
         try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
@@ -119,6 +129,6 @@ public class HttpServer {
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
         }
-        return 35001;
+        return 35002;
     }
 }
