@@ -90,7 +90,7 @@ public class HttpServer {
                 }
             } else {
                 parametro="none";
-                path="none";
+                path="/Calculadora.html";
                 System.out.println("header: " + inputLine);
                 headers.add(inputLine);
             }
